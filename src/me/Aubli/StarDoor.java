@@ -20,8 +20,11 @@ public class StarDoor extends JavaPlugin{
 	public ItemStack tool;
 	
 	public String messagePrefix = ChatColor.DARK_GRAY + "[" + ChatColor.GOLD + "StarDoors" + ChatColor.DARK_GRAY + "] " + ChatColor.RESET;
+	public static String doorPath;
 	
 	public boolean enable = false;
+	
+	public static final DoorManager dm = new DoorManager();
 	
 	@Override
 	public void onDisable(){
@@ -53,7 +56,7 @@ public class StarDoor extends JavaPlugin{
 	private void registerListeners(){
 		PluginManager pm = Bukkit.getPluginManager();
 		
-		pm.registerEvents(new PlayerInteractListener(), this);
+		pm.registerEvents(new PlayerInteractListener(this), this);
 	}
 
 	private void loadConfig(){
@@ -64,6 +67,7 @@ public class StarDoor extends JavaPlugin{
 		saveConfig();
 		
 		enable = getConfig().getBoolean("config.settings.enable");
+		doorPath = getDataFolder().getPath() + "/doors/";
 		
 		tool = new ItemStack(Material.STICK);		
 		ItemMeta toolMeta = tool.getItemMeta();		
