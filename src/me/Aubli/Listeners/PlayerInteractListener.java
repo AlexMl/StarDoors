@@ -1,5 +1,7 @@
 package me.Aubli.Listeners;
 
-public class PlayerInteractListener {
+import org.bukkit.event.Listener;
+
+public class PlayerInteractListener implements Listener {
 
 }
