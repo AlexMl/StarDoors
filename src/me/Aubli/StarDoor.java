@@ -2,7 +2,7 @@ package me.Aubli;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class StarDoors extends JavaPlugin{
+public class StarDoor extends JavaPlugin{
 	
 	@Override
 	public void onDisable(){
