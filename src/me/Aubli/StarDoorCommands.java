@@ -25,7 +25,7 @@ public class StarDoorCommands implements CommandExecutor{
 			if(args.length==1){
 				if(playerSender.hasPermission("sd.tool")){
 					playerSender.getInventory().addItem(plugin.tool);					
-					playerSender.sendMessage("Markier den Fahrstuhl mit links- und rechtsclick!");
+					playerSender.sendMessage("Markier die Tür mit links- und rechtsclick!");
 					return true;
 				}else{
 					playerSender.sendMessage(ChatColor.DARK_RED + "You don't have permissions for that command!");
