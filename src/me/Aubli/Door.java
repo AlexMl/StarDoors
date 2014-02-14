@@ -24,7 +24,7 @@ public class Door {
 		
 		this.doorID = doorID;
 		
-		this.doorFile = new File(doorPath + doorID + ".yml");
+		this.doorFile = new File(doorPath + "/" + doorID + ".yml");
 		
 		if(doorFile.exists()){
 			throw new Exception("doorID already exists!");
