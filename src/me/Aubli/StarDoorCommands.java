@@ -1,5 +1,7 @@
 package me.Aubli;
 
+import me.Aubli.Door.CloseType;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -29,6 +31,15 @@ public class StarDoorCommands implements CommandExecutor{
 					return true;
 				}else{
 					playerSender.sendMessage(ChatColor.DARK_RED + "You don't have permissions for that command!");
+					return true;
+				}
+			}else if(args.length==2){
+				if(args[0].equalsIgnoreCase("close")){
+					plugin.dm.moveDoor(plugin.dm.getDoor(Integer.parseInt(args[1])), CloseType.BOTTOM, playerSender);
+					return true;
+				}
+				if(args[0].equalsIgnoreCase("open")){
+					plugin.dm.moveDoor(plugin.dm.getDoor(Integer.parseInt(args[1])), CloseType.TOP, playerSender);
 					return true;
 				}
 			}else{

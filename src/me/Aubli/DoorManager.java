@@ -4,7 +4,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import me.Aubli.Door.CloseType;
+import me.Aubli.Door.OpenType;
+
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 public class DoorManager {
 	
@@ -15,6 +19,19 @@ public class DoorManager {
 	public DoorManager(){
 		this.plugin = StarDoor.getInstance();
 		this.doorPath = plugin.doorPath;
+	}	
+
+	public void shutdown(){
+		
+		for(int i=0;i<getDoors().length;i++){
+			//closeDoor(getDoors()[i], null);
+		}
+		
+		saveDoors();
+	}
+	
+	public void startup(){
+		loadDoors();
 	}
 	
 	
@@ -71,35 +88,71 @@ public class DoorManager {
 	}
 	
 	public boolean addDoor(Location corner1, Location corner2){
+		
+		int tempX;
+		int tempY;
+		int tempZ;
+		
+		
+		if(corner2.getBlockX()<corner1.getBlockX()){
+			tempX = corner2.getBlockX();
+			corner2.setX(corner1.getBlockX());
+			corner1.setX(tempX);
+		}								
+		
+		if(corner2.getBlockY()<corner1.getBlockY()){
+			tempY = corner2.getBlockY();
+			corner2.setY(corner1.getBlockY());
+			corner1.setY(tempY);
+		}
+		
+		if(corner2.getBlockZ()<corner1.getBlockZ()){
+			tempZ = corner2.getBlockZ();
+			corner2.setZ(corner1.getBlockZ());
+			corner1.setZ(tempZ);
+		}	
+		
 		try {
-			Door door = new Door(corner1, corner2, getNewID(), doorPath);
-			doors.add(door);
-			return true;
+			Door door = new Door(corner1, corner2, getNewID(), doorPath, CloseType.BOTTOM, OpenType.TOP);
+			return doors.add(door);
 		} catch (Exception e) {		
 			e.printStackTrace();
 		}
 		return false;
 	}
 	
-	public boolean removeDoor(){
-		
-		return false;
+	public boolean removeDoor(Door door){		
+		return doors.remove(door);
 	}
 	
-	public void saveDoors(){
+	public void openDoor(Door door, Player player){
+		new DoorRunnable(door.getCorner1(), door.getCorner2(), CloseType.TOP, door.getBlockList(), player).runTaskTimer(plugin, 0, 10L);		
+	}
+	
+	public void moveDoor(Door door, CloseType stat, Player player){
+		new DoorRunnable(door.getCorner1(), door.getCorner2(), stat, door.getBlockList(), player).runTaskTimer(plugin, 0, 10L);		
+	}
+	
+	public void closeDoor(Door door, Player player){
+		new DoorRunnable(door.getCorner1(), door.getCorner2(), CloseType.BOTTOM, door.getBlockList(), player).runTaskTimer(plugin, 0, 2L);		
+	}
+	
+	private void saveDoors(){
 		for(int i=0;i<getDoors().length;i++){
 			getDoors()[i].saveDoor();
 		}
 	}
 	
-	public void loadDoors(){
+	private void loadDoors(){
 		doors.clear();
 
 		if(new File(doorPath).listFiles().length>0){
 			for(int i=0;i<new File(doorPath).listFiles().length;i++){
 				Door door = new Door(new File(doorPath).listFiles()[i]);
+				//door.update();
 				doors.add(door);
 			}
 		}
 	}
+	
 }
