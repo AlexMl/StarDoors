@@ -29,10 +29,12 @@ public class PlayerInteractListener implements Listener {
 					if(event.getAction()==Action.RIGHT_CLICK_BLOCK){
 						doorLocs.put("right", event.getClickedBlock().getLocation());
 						eventPlayer.sendMessage(plugin.messagePrefix + ChatColor.GREEN + "Rechter Klick gespeichert!");
+						event.setCancelled(true);
 					}
 					if(event.getAction()==Action.LEFT_CLICK_BLOCK){
 						doorLocs.put("left", event.getClickedBlock().getLocation());
 						eventPlayer.sendMessage(plugin.messagePrefix + ChatColor.GREEN + "Link Klick gespeichert!");
+						event.setCancelled(true);
 					}
 					
 					if(doorLocs.containsKey("left") && doorLocs.containsKey("right")){						
