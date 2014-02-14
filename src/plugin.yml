@@ -3,4 +3,9 @@ description: Automated Doors
 Author: Aubli
 version: 0.1
 
-main: me.Aubli.StarDoors
+main: me.Aubli.StarDoor
+
+commands:
+    sd:
+        description: StarDoor Commands!
+        usage: /<command>
