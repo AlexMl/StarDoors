@@ -35,7 +35,7 @@ public class StarDoor extends JavaPlugin{
 	public void onDisable(){
 		
 		if(enable){
-			dm.saveDoors();
+			dm.shutdown();
 			logger.info("[StarDoors] Plugin disabled!");
 		}
 	}
@@ -51,7 +51,7 @@ public class StarDoor extends JavaPlugin{
 			Bukkit.getPluginManager().disablePlugin(this);
 		}
 		dm = new DoorManager();
-		dm.loadDoors();		
+		dm.startup();		
 		
 		logger.info("[StarDoors] Plugin enabled!");
 	}
