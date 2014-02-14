@@ -26,10 +26,13 @@ public class StarDoor extends JavaPlugin{
 	
 	public static final DoorManager dm = new DoorManager();
 	
+	public static StarDoor instance;
+	
 	@Override
 	public void onDisable(){
 		
 		if(enable){
+			dm.saveDoors();
 			logger.info("[StarDoors] Plugin disabled!");
 		}
 	}
@@ -44,10 +47,10 @@ public class StarDoor extends JavaPlugin{
 		if(enable==false){
 			Bukkit.getPluginManager().disablePlugin(this);
 		}
+		dm.loadDoors();
 		
 		logger.info("[StarDoors] Plugin enabled!");
 	}
-	
 	
 	private void registerCommands(){
 		getCommand("sd").setExecutor(new StarDoorCommands(this));
@@ -74,5 +77,9 @@ public class StarDoor extends JavaPlugin{
 		toolMeta.setDisplayName(messagePrefix + "Tool");	
 		toolMeta.addEnchant(Enchantment.DURABILITY, 5, true);
 		tool.setItemMeta(toolMeta);		
+	}
+	
+	public static StarDoor getInstance(){
+		return instance;
 	}
 }

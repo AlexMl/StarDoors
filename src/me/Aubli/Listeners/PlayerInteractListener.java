@@ -35,7 +35,7 @@ public class PlayerInteractListener implements Listener {
 						eventPlayer.sendMessage(plugin.messagePrefix + ChatColor.GREEN + "Link Klick gespeichert!");
 					}
 					
-					if(doorLocs.containsKey("left") && doorLocs.containsKey("right")){
+					if(doorLocs.containsKey("left") && doorLocs.containsKey("right")){						
 						StarDoor.dm.addDoor(doorLocs.get("left"), doorLocs.get("right"));
 						doorLocs.clear();
 						return;
