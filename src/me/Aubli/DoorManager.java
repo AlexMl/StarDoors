@@ -9,9 +9,13 @@ import org.bukkit.Location;
 public class DoorManager {
 	
 	private ArrayList<Door> doors = new ArrayList<Door>();
-	private String doorPath = StarDoor.doorPath;
+	private StarDoor plugin;
+	private String doorPath;
 	
-	
+	public DoorManager(){
+		this.plugin = StarDoor.getInstance();
+		this.doorPath = plugin.doorPath;
+	}
 	
 	
 	private int getNewID(){
@@ -90,11 +94,12 @@ public class DoorManager {
 	
 	public void loadDoors(){
 		doors.clear();
-		
-		for(int i=0;i<new File(doorPath).listFiles().length;i++){
-			Door door = new Door(new File(doorPath).listFiles()[i]);
-			doors.add(door);
+
+		if(new File(doorPath).listFiles().length>0){
+			for(int i=0;i<new File(doorPath).listFiles().length;i++){
+				Door door = new Door(new File(doorPath).listFiles()[i]);
+				doors.add(door);
+			}
 		}
-		
 	}
 }
