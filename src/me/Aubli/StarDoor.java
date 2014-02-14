@@ -1,7 +1,9 @@
 package me.Aubli;
 
+import java.io.File;
 import java.util.logging.Logger;
 
+import me.Aubli.Listeners.BlockBreakListener;
 import me.Aubli.Listeners.PlayerInteractListener;
 
 import org.bukkit.Bukkit;
@@ -18,13 +20,14 @@ public class StarDoor extends JavaPlugin{
 	public final Logger logger = Bukkit.getLogger();
 	
 	public ItemStack tool;
+	public Material doorMaterial;
 	
 	public String messagePrefix = ChatColor.DARK_GRAY + "[" + ChatColor.GOLD + "StarDoors" + ChatColor.DARK_GRAY + "] " + ChatColor.RESET;
-	public static String doorPath;
+	public String doorPath = "";
 	
 	public boolean enable = false;
 	
-	public static final DoorManager dm = new DoorManager();
+	public DoorManager dm;
 	
 	public static StarDoor instance;
 	
@@ -47,7 +50,8 @@ public class StarDoor extends JavaPlugin{
 		if(enable==false){
 			Bukkit.getPluginManager().disablePlugin(this);
 		}
-		dm.loadDoors();
+		dm = new DoorManager();
+		dm.loadDoors();		
 		
 		logger.info("[StarDoors] Plugin enabled!");
 	}
@@ -60,17 +64,24 @@ public class StarDoor extends JavaPlugin{
 		PluginManager pm = Bukkit.getPluginManager();
 		
 		pm.registerEvents(new PlayerInteractListener(this), this);
+		pm.registerEvents(new BlockBreakListener(this), this);
 	}
 
 	private void loadConfig(){
-		
-		this.getConfig().addDefault("config.settings.enable", true);
 
+		this.getConfig().addDefault("config.settings.enable", true);
+		this.getConfig().addDefault("config.material.door", Material.QUARTZ.name());
 		this.getConfig().options().copyDefaults(true);
 		saveConfig();
 		
+		doorMaterial = Material.getMaterial(getConfig().getString("config.material.door"));
 		enable = getConfig().getBoolean("config.settings.enable");
-		doorPath = getDataFolder().getPath() + "/doors/";
+		doorPath = getDataFolder().getPath() + "/doors";
+		instance = this;
+		
+		if(!new File(doorPath).exists()){
+			new File(doorPath).mkdirs();			
+		}
 		
 		tool = new ItemStack(Material.STICK);		
 		ItemMeta toolMeta = tool.getItemMeta();		
