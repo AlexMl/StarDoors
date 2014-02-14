@@ -24,7 +24,7 @@ public class PlayerInteractListener implements Listener {
 		Player eventPlayer = event.getPlayer();
 		
 		if(event.getItem()!=null){
-			if(event.getItem()==plugin.tool){
+			if(event.getItem().equals(plugin.tool)){
 				if(eventPlayer.hasPermission("sd.tool")){
 					if(event.getAction()==Action.RIGHT_CLICK_BLOCK){
 						doorLocs.put("right", event.getClickedBlock().getLocation());
@@ -36,7 +36,7 @@ public class PlayerInteractListener implements Listener {
 					}
 					
 					if(doorLocs.containsKey("left") && doorLocs.containsKey("right")){						
-						StarDoor.dm.addDoor(doorLocs.get("left"), doorLocs.get("right"));
+						StarDoor.getInstance().dm.addDoor(doorLocs.get("left"), doorLocs.get("right"));
 						doorLocs.clear();
 						return;
 					}
