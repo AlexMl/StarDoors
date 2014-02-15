@@ -1,6 +1,7 @@
 package me.Aubli;
 
 import me.Aubli.Door.CloseType;
+import me.Aubli.Door.OpenType;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -33,13 +34,13 @@ public class StarDoorCommands implements CommandExecutor{
 					playerSender.sendMessage(ChatColor.DARK_RED + "You don't have permissions for that command!");
 					return true;
 				}
-			}else if(args.length==2){
+			}else if(args.length==4){
 				if(args[0].equalsIgnoreCase("close")){
-					plugin.dm.moveDoor(plugin.dm.getDoor(Integer.parseInt(args[1])), CloseType.BOTTOM, playerSender);
+					plugin.dm.moveDoor(plugin.dm.getDoor(Integer.parseInt(args[1])), CloseType.valueOf(args[2]), OpenType.valueOf(args[3]), playerSender);
 					return true;
 				}
 				if(args[0].equalsIgnoreCase("open")){
-					plugin.dm.moveDoor(plugin.dm.getDoor(Integer.parseInt(args[1])), CloseType.TOP, playerSender);
+					plugin.dm.moveDoor(plugin.dm.getDoor(Integer.parseInt(args[1])), CloseType.valueOf(args[2]), OpenType.valueOf(args[3]), playerSender);
 					return true;
 				}
 			}else{
@@ -60,6 +61,8 @@ public class StarDoorCommands implements CommandExecutor{
 			
 			playerSender.sendMessage(ChatColor.YELLOW + "|---------- " + pluginName + " v" + pluginVersion + " ----------|");
 			playerSender.sendMessage(ChatColor.YELLOW + "|" + ChatColor.DARK_GRAY + " sd tool");
+			playerSender.sendMessage(ChatColor.YELLOW + "|" + ChatColor.DARK_GRAY + " sd close [doorID] [CloseType] [OpenType]");
+			playerSender.sendMessage(ChatColor.YELLOW + "|" + ChatColor.DARK_GRAY + " sd open [doorID] [CloseType] [OpenType]");
 		}else{
 			playerSender.sendMessage(ChatColor.DARK_RED + "You don't have permissions for that command!");
 			return;

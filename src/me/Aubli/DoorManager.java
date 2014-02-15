@@ -126,15 +126,15 @@ public class DoorManager {
 	}
 	
 	public void openDoor(Door door, Player player){
-		new DoorRunnable(door.getCorner1(), door.getCorner2(), CloseType.TOP, door.getBlockList(), player).runTaskTimer(plugin, 0, 10L);		
+		new DoorRunnable(door.getCorner1(), door.getCorner2(), door.getCloseType(), door.getOpenType(), door.getBlockList(), player).runTaskTimer(plugin, 0, 10L);		
 	}
 	
-	public void moveDoor(Door door, CloseType stat, Player player){
-		new DoorRunnable(door.getCorner1(), door.getCorner2(), stat, door.getBlockList(), player).runTaskTimer(plugin, 0, 10L);		
+	public void moveDoor(Door door, CloseType ct, OpenType ot, Player player){
+		new DoorRunnable(door.getCorner1(), door.getCorner2(), ct, ot, door.getBlockList(), player).runTaskTimer(plugin, 0, 10L);		
 	}
 	
 	public void closeDoor(Door door, Player player){
-		new DoorRunnable(door.getCorner1(), door.getCorner2(), CloseType.BOTTOM, door.getBlockList(), player).runTaskTimer(plugin, 0, 2L);		
+		new DoorRunnable(door.getCorner1(), door.getCorner2(), door.getCloseType(), door.getOpenType(), door.getBlockList(), player).runTaskTimer(plugin, 0, 2L);		
 	}
 	
 	private void saveDoors(){

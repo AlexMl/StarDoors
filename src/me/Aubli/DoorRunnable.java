@@ -3,6 +3,7 @@ package me.Aubli;
 import java.util.ArrayList;
 
 import me.Aubli.Door.CloseType;
+import me.Aubli.Door.OpenType;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -18,17 +19,19 @@ public class DoorRunnable extends BukkitRunnable{
 	private StarDoor plugin = StarDoor.getInstance();
 	private Location c1;
 	private Location c2;
-	private CloseType stat;
+	private CloseType ct;
+	private OpenType ot;
 	private Material doorMaterial;
 	private ArrayList<Block> doorBlocks;
 	private Player player;
 	
 	private int y;
 	
-	public DoorRunnable(Location corner1, Location corner2, CloseType stat, ArrayList<Block> doorBlocks, Player player){
+	public DoorRunnable(Location corner1, Location corner2, CloseType ct, OpenType ot, ArrayList<Block> doorBlocks, Player player){
 		this.c1 = corner1;
 		this.c2 = corner2;
-		this.stat = stat;
+		this.ct = ct;
+		this.ot = ot;
 		this.doorBlocks = doorBlocks;
 		this.player = player;
 		doorMaterial = plugin.doorMaterial;
@@ -37,7 +40,7 @@ public class DoorRunnable extends BukkitRunnable{
 	@Override
 	public void run() {
 		
-		if(stat.equals(CloseType.TOP)){
+		if(ct.equals(CloseType.TOP)){
 			
 			for(;y<Math.abs(c2.getBlockY()-c1.getBlockY()+1);y++){
 				if(Math.abs(c2.getBlockX()-c1.getBlockX())>0){
@@ -72,11 +75,11 @@ public class DoorRunnable extends BukkitRunnable{
 					return;
 				}
 			}
-			new DoorRunnable(c1, c2, CloseType.BOTTOM, doorBlocks, player).runTaskTimer(plugin, 5*20L, 10L);
+			new DoorRunnable(c1, c2, CloseType.BOTTOM, ot, doorBlocks, player).runTaskTimer(plugin, 5*20L, 10L);
 			this.cancel();			
 		}
 		
-		if(stat.equals(CloseType.BOTTOM)){			
+		if(ct.equals(CloseType.BOTTOM)){			
 				
 			for(;y<Math.abs(c2.getBlockY()-c1.getBlockY()+1);y++){
 				if(Math.abs(c2.getBlockX()-c1.getBlockX())>0){
