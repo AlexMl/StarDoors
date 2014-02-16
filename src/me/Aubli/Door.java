@@ -17,6 +17,7 @@ public class Door {
 		RIGHT,
 		TOP,
 		BOTTOM,
+		MIDDLE,
 		;
 	}
 	
@@ -25,6 +26,7 @@ public class Door {
 		RIGHT,
 		TOP,
 		BOTTOM,
+		MIDDLE,
 		;
 	}
 	
@@ -66,6 +68,9 @@ public class Door {
 		
 		this.doorID = doorConfig.getInt("door.doorID");
 		
+		this.openType = OpenType.valueOf(doorConfig.getString("door.OpenType"));
+		this.closeType = CloseType.valueOf(doorConfig.getString("door.CloseType"));
+		
 		this.corner1 = new Location(Bukkit.getWorld(doorConfig.getString("door.Location.world")), doorConfig.getInt("door.Location.corner1.X"), doorConfig.getInt("door.Location.corner1.Y"), doorConfig.getInt("door.Location.corner1.Z"));
 		this.corner2 = new Location(Bukkit.getWorld(doorConfig.getString("door.Location.world")), doorConfig.getInt("door.Location.corner2.X"), doorConfig.getInt("door.Location.corner2.Y"), doorConfig.getInt("door.Location.corner2.Z"));
 	}
@@ -77,8 +82,8 @@ public class Door {
 			
 			doorConfig.set("door.doorID", doorID);
 			
-			doorConfig.set("door.CloseType", closeType);
-			doorConfig.set("door.OpenType", openType);
+			doorConfig.set("door.CloseType", closeType.toString());
+			doorConfig.set("door.OpenType", openType.toString());
 			
 			doorConfig.set("door.Location.world", corner1.getWorld().getName());
 			doorConfig.set("door.Location.corner1.X", corner1.getBlockX());
