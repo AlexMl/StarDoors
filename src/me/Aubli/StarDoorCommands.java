@@ -34,13 +34,13 @@ public class StarDoorCommands implements CommandExecutor{
 					playerSender.sendMessage(ChatColor.DARK_RED + "You don't have permissions for that command!");
 					return true;
 				}
-			}else if(args.length==4){
+			}else if(args.length==3){
 				if(args[0].equalsIgnoreCase("close")){
-					plugin.dm.moveDoor(plugin.dm.getDoor(Integer.parseInt(args[1])), CloseType.valueOf(args[2]), OpenType.valueOf(args[3]), playerSender);
+					plugin.dm.moveDoor(plugin.dm.getDoor(Integer.parseInt(args[1])), CloseType.valueOf(args[2]), null, playerSender);
 					return true;
 				}
 				if(args[0].equalsIgnoreCase("open")){
-					plugin.dm.moveDoor(plugin.dm.getDoor(Integer.parseInt(args[1])), CloseType.valueOf(args[2]), OpenType.valueOf(args[3]), playerSender);
+					plugin.dm.moveDoor(plugin.dm.getDoor(Integer.parseInt(args[1])), null, OpenType.valueOf(args[2]), playerSender);
 					return true;
 				}
 			}else{
@@ -61,8 +61,8 @@ public class StarDoorCommands implements CommandExecutor{
 			
 			playerSender.sendMessage(ChatColor.YELLOW + "|---------- " + pluginName + " v" + pluginVersion + " ----------|");
 			playerSender.sendMessage(ChatColor.YELLOW + "|" + ChatColor.DARK_GRAY + " sd tool");
-			playerSender.sendMessage(ChatColor.YELLOW + "|" + ChatColor.DARK_GRAY + " sd close [doorID] [CloseType] [OpenType]");
-			playerSender.sendMessage(ChatColor.YELLOW + "|" + ChatColor.DARK_GRAY + " sd open [doorID] [CloseType] [OpenType]");
+			playerSender.sendMessage(ChatColor.YELLOW + "|" + ChatColor.DARK_GRAY + " sd close [doorID] [CloseType]");
+			playerSender.sendMessage(ChatColor.YELLOW + "|" + ChatColor.DARK_GRAY + " sd open [doorID] [OpenType]");
 		}else{
 			playerSender.sendMessage(ChatColor.DARK_RED + "You don't have permissions for that command!");
 			return;
