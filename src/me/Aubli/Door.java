@@ -57,8 +57,11 @@ public class Door {
 		if(doorFile.exists()){
 			throw new Exception("doorID already exists!");
 		}
+		
+		doorFile.createNewFile();
+		
 		doorConfig = YamlConfiguration.loadConfiguration(doorFile);
-		update();
+	//	update();
 		saveDoor();
 	}
 	
@@ -78,8 +81,6 @@ public class Door {
 	void saveDoor(){
 		
 		try {
-			doorFile.createNewFile();
-			
 			doorConfig.set("door.doorID", doorID);
 			
 			doorConfig.set("door.CloseType", closeType.toString());
@@ -133,14 +134,13 @@ public class Door {
 		return closeType;
 	}
 	
-	public void update(){
-		new DoorUpdateRunnable(this).runTask(StarDoor.getInstance());
+	public File getFile(){
+		return doorFile;
 	}
 	
-	@Override
-	public String toString(){
-		return "{DOOR-" + doorID + " =[" + corner1.getWorld().getName() + "# " + corner1.getBlockX() + ":" + corner1.getBlockY() + ":" + corner1.getBlockZ() + " ; " + corner2.getBlockX() + ":" + corner2.getBlockY() + ":" + corner2.getBlockZ() + "] }";
-	}
+	/*public void update(){
+		new DoorUpdateRunnable(this).runTask(StarDoor.getInstance());
+	}*/
 	
 	public void setOpenType(OpenType ot){
 		this.openType = ot;
@@ -149,4 +149,10 @@ public class Door {
 	public void setCloseType(CloseType ct){
 		this.closeType = ct;
 	}
+	
+	@Override
+	public String toString(){
+		return "{DOOR-" + doorID + " =[" + corner1.getWorld().getName() + "# " + corner1.getBlockX() + ":" + corner1.getBlockY() + ":" + corner1.getBlockZ() + " ; " + corner2.getBlockX() + ":" + corner2.getBlockY() + ":" + corner2.getBlockZ() + "] }";
+	}	
+	
 }

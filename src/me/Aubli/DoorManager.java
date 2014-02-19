@@ -113,7 +113,7 @@ public class DoorManager {
 		}	
 		
 		try {
-			Door door = new Door(corner1, corner2, getNewID(), doorPath, CloseType.BOTTOM, OpenType.TOP);
+			Door door = new Door(corner1, corner2, getNewID(), doorPath, CloseType.TOP, OpenType.MIDDLE);
 			return doors.add(door);
 		} catch (Exception e) {		
 			e.printStackTrace();
@@ -121,7 +121,8 @@ public class DoorManager {
 		return false;
 	}
 	
-	public boolean removeDoor(Door door){		
+	public boolean removeDoor(Door door){
+		door.getFile().delete();
 		return doors.remove(door);
 	}
 	
