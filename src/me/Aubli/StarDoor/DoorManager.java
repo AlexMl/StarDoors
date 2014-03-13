@@ -75,7 +75,6 @@ public class DoorManager {
 		for(int i=0;i<doorArray.length;i++){
 			doorArray[i] = doors.get(i);
 		}
-		
 		return doorArray;
 	}
 	

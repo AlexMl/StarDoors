@@ -1,7 +1,7 @@
 name: StarDoor
 description: Automated Doors
 Author: Aubli
-version: 0.1
+version: 0.9
 
 main: me.Aubli.StarDoor.StarDoor
 
