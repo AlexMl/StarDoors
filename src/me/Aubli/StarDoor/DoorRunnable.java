@@ -1,16 +1,14 @@
-package me.Aubli;
+package me.Aubli.StarDoor;
 
-import java.util.ArrayList;
-
-import me.Aubli.Door.CloseType;
-import me.Aubli.Door.OpenType;
+import me.Aubli.StarDoor.Door.CloseType;
+import me.Aubli.StarDoor.Door.DoorStat;
+import me.Aubli.StarDoor.Door.OpenType;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -19,10 +17,10 @@ public class DoorRunnable extends BukkitRunnable{
 	private StarDoor plugin = StarDoor.getInstance();
 	private Location c1;
 	private Location c2;
+	private DoorStat futureStat;
 	private CloseType ct;
 	private OpenType ot;
-	private Material doorMaterial;
-	private ArrayList<Block> doorBlocks;
+	private Material doorMaterial;	
 	private Player player;
 	
 	private boolean blockChange = false;
@@ -31,12 +29,13 @@ public class DoorRunnable extends BukkitRunnable{
 	private int y;
 	private int z;
 	
-	public DoorRunnable(Location corner1, Location corner2, CloseType ct, OpenType ot, ArrayList<Block> doorBlocks, Player player){
-		this.c1 = corner1;
-		this.c2 = corner2;
-		this.ct = ct;
-		this.ot = ot;
-		this.doorBlocks = doorBlocks;
+	public DoorRunnable(Door door, DoorStat stat, Player player){
+		this.c1 = door.getCorner1();
+		this.c2 = door.getCorner2();
+		this.ct = door.getCloseType();
+		this.ot = door.getOpenType();		
+		this.futureStat = stat;		
+		
 		this.player = player;
 		doorMaterial = plugin.doorMaterial;
 	}
@@ -44,7 +43,7 @@ public class DoorRunnable extends BukkitRunnable{
 	@Override
 	public void run() {
 		
-		if(ot!=null){ //Door opens
+		if(futureStat==DoorStat.OPEN){ //Door opens
 			if(ot.equals(OpenType.TOP)){			
 				for(;y<Math.abs(c2.getBlockY()-c1.getBlockY()+1);y++){
 					if(Math.abs(c2.getBlockX()-c1.getBlockX())>0){
@@ -87,7 +86,7 @@ public class DoorRunnable extends BukkitRunnable{
 						return;
 					}
 				}
-				new DoorRunnable(c1, c2, ct, null, doorBlocks, player).runTaskTimer(plugin, 5*20L, 10L);
+				//new DoorRunnable(door, futureStat, player).runTaskTimer(plugin, 5*20L, 10L);
 				this.cancel();			
 			}else if(ot.equals(OpenType.BOTTOM)){			
 				for(;y<Math.abs(c2.getBlockY()-c1.getBlockY()+1);y++){
@@ -131,7 +130,7 @@ public class DoorRunnable extends BukkitRunnable{
 						return;
 					}
 				}
-				new DoorRunnable(c1, c2, ct, null, doorBlocks, player).runTaskTimer(plugin, 5*20L, 10L);
+				//new DoorRunnable(door, futureStat, player).runTaskTimer(plugin, 5*20L, 10L);
 				this.cancel();			
 			}else if(ot.equals(OpenType.RIGHT)){			
 				if(Math.abs(c2.getBlockX()-c1.getBlockX())>0){
@@ -177,7 +176,7 @@ public class DoorRunnable extends BukkitRunnable{
 						return;
 					}
 				}
-				new DoorRunnable(c1, c2, ct, null, doorBlocks, player).runTaskTimer(plugin, 5*20L, 10L);
+				//new DoorRunnable(door, futureStat, player).runTaskTimer(plugin, 5*20L, 10L);
 				this.cancel();			
 			}else if(ot.equals(OpenType.LEFT)){			
 				if(Math.abs(c2.getBlockX()-c1.getBlockX())>0){
@@ -223,7 +222,7 @@ public class DoorRunnable extends BukkitRunnable{
 						return;
 					}
 				}
-				new DoorRunnable(c1, c2, ct, null, doorBlocks, player).runTaskTimer(plugin, 5*20L, 10L);
+				//	new DoorRunnable(door, futureStat, player).runTaskTimer(plugin, 5*20L, 10L);
 				this.cancel();	
 			}else if(ot.equals(OpenType.MIDDLE)){
 				
@@ -366,51 +365,13 @@ public class DoorRunnable extends BukkitRunnable{
 					}
 				}
 				
-				new DoorRunnable(c1, c2, ct, null, doorBlocks, player).runTaskTimer(plugin, 5*20L, 10L);
+				//new DoorRunnable(door, futureStat, player).runTaskTimer(plugin, 5*20L, 10L);
 				this.cancel();	
 			}else{
 				this.cancel();
 			}
-		}
+		}else if(futureStat==DoorStat.CLOSE){ //door close
 		
-		if(ct!=null){ //door close
-			
-			/*if(ct.equals(CloseType.BOTTOM)){					
-				for(;y<Math.abs(c2.getBlockY()-c1.getBlockY()+1);y++){
-					if(Math.abs(c2.getBlockX()-c1.getBlockX())>0){
-						for(int x=0;x<Math.abs(c2.getBlockX()-c1.getBlockX())+1;x++){
-							if(c1.clone().add(x, y, 0).getBlock().getType()==Material.AIR){
-								c1.clone().add(x, y, 0).getBlock().setType(doorMaterial);
-								Bukkit.broadcastMessage(ChatColor.GREEN + c1.clone().add(x, y, 0).getBlock().toString());
-							}						
-						}
-						
-						if(player!=null){
-							player.playSound(player.getLocation(), Sound.PISTON_EXTEND, 80, 0);
-						}
-						
-						y++;
-						return;
-					}
-					
-					if(Math.abs(c2.getBlockZ()-c1.getBlockZ())>0){
-						for(int z=0;z<Math.abs(c2.getBlockZ()-c1.getBlockZ())+1;z++){
-							if(c1.clone().add(0, y, z).getBlock().getType()==Material.AIR){
-								c1.clone().add(0, y, z).getBlock().setType(doorMaterial);
-								Bukkit.broadcastMessage(ChatColor.RED + c1.clone().add(0, y, z).getBlock().toString());
-							}						
-						}
-						
-						if(player!=null){
-							player.playSound(player.getLocation(), Sound.PISTON_EXTEND, 80, 0);
-						}
-						
-						y++;
-						return;
-					}
-				}
-				this.cancel();
-			}*/
 			if(ct.equals(CloseType.TOP)){			
 				for(;y<Math.abs(c2.getBlockY()-c1.getBlockY()+1);y++){
 					if(Math.abs(c2.getBlockX()-c1.getBlockX())>0){
@@ -731,19 +692,4 @@ public class DoorRunnable extends BukkitRunnable{
 		}
 		this.cancel();
 	}
-	
-	
-	/*private Block getOriginBlock(Block block){
-		
-		for(int i=0;i<doorBlocks.size();i++){
-		
-			Block tempBlock = doorBlocks.get(i);
-			if(tempBlock.getLocation().equals(block.getLocation())){
-				return tempBlock;
-			}
-			
-		}
-		return null;
-	}*/
-	
 }

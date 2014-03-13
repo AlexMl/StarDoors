@@ -1,10 +1,12 @@
-package me.Aubli;
+package me.Aubli.StarDoor;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.logging.Logger;
 
-import me.Aubli.Listeners.BlockBreakListener;
-import me.Aubli.Listeners.PlayerInteractListener;
+import me.Aubli.StarDoor.Listeners.BlockBreakListener;
+import me.Aubli.StarDoor.Listeners.PlayerInteractListener;
+import me.Aubli.StarDoor.Listeners.SignChangeListener;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -22,7 +24,7 @@ public class StarDoor extends JavaPlugin{
 	public ItemStack tool;
 	public Material doorMaterial;
 	
-	public String messagePrefix = ChatColor.DARK_GRAY + "[" + ChatColor.GOLD + "StarDoors" + ChatColor.DARK_GRAY + "] " + ChatColor.RESET;
+	public String messagePrefix = ChatColor.DARK_GRAY + "[" + ChatColor.GOLD + "StarDoor" + ChatColor.DARK_GRAY + "] " + ChatColor.RESET;
 	public String doorPath = "";
 	
 	public boolean enable = false;
@@ -36,7 +38,7 @@ public class StarDoor extends JavaPlugin{
 		
 		if(enable){
 			dm.shutdown();
-			logger.info("[StarDoors] Plugin disabled!");
+			logger.info("[StarDoor] Plugin disabled!");
 		}
 	}
 	
@@ -53,7 +55,9 @@ public class StarDoor extends JavaPlugin{
 		dm = new DoorManager();
 		dm.startup();		
 		
-		logger.info("[StarDoors] Plugin enabled!");
+		new SignManager();
+		
+		logger.info("[StarDoor] Plugin enabled!");
 	}
 	
 	private void registerCommands(){
@@ -65,6 +69,7 @@ public class StarDoor extends JavaPlugin{
 		
 		pm.registerEvents(new PlayerInteractListener(this), this);
 		pm.registerEvents(new BlockBreakListener(this), this);
+		pm.registerEvents(new SignChangeListener(), this);
 	}
 
 	private void loadConfig(){
@@ -81,6 +86,14 @@ public class StarDoor extends JavaPlugin{
 		
 		if(!new File(doorPath).exists()){
 			new File(doorPath).mkdirs();			
+		}
+		
+		if(!new File(this.getDataFolder().getPath() + "/signs.yml").exists()){
+			try {
+				new File(this.getDataFolder().getPath() + "/signs.yml").createNewFile();
+			} catch (IOException e) {			
+				e.printStackTrace();
+			}			
 		}
 		
 		tool = new ItemStack(Material.STICK);		

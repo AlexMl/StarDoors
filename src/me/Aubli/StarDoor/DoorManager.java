@@ -1,11 +1,12 @@
-package me.Aubli;
+package me.Aubli.StarDoor;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import me.Aubli.Door.CloseType;
-import me.Aubli.Door.OpenType;
+import me.Aubli.StarDoor.Door.CloseType;
+import me.Aubli.StarDoor.Door.DoorStat;
+import me.Aubli.StarDoor.Door.OpenType;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -21,12 +22,7 @@ public class DoorManager {
 		this.doorPath = plugin.doorPath;
 	}	
 
-	public void shutdown(){
-		
-		for(int i=0;i<getDoors().length;i++){
-			//closeDoor(getDoors()[i], null);
-		}
-		
+	public void shutdown(){		
 		saveDoors();
 	}
 	
@@ -34,6 +30,13 @@ public class DoorManager {
 		loadDoors();
 	}
 	
+	public void save(){
+		saveDoors();
+	}
+	
+	public void reload(){
+		loadDoors();
+	}
 	
 	private int getNewID(){
 		
@@ -126,17 +129,18 @@ public class DoorManager {
 		return doors.remove(door);
 	}
 	
-	public void openDoor(Door door, Player player){
-		new DoorRunnable(door.getCorner1(), door.getCorner2(), door.getCloseType(), door.getOpenType(), door.getBlockList(), player).runTaskTimer(plugin, 0, 10L);		
+	public void moveDoor(Door door, Player player, boolean open){
+		if(open){
+			moveDoor(door, player, DoorStat.OPEN);
+		}else{
+			moveDoor(door, player, DoorStat.CLOSE);
+		}
 	}
 	
-	public void moveDoor(Door door, CloseType ct, OpenType ot, Player player){
-		new DoorRunnable(door.getCorner1(), door.getCorner2(), ct, ot, door.getBlockList(), player).runTaskTimer(plugin, 0, 10L);		
-	}
-	
-	public void closeDoor(Door door, Player player){
-		new DoorRunnable(door.getCorner1(), door.getCorner2(), door.getCloseType(), door.getOpenType(), door.getBlockList(), player).runTaskTimer(plugin, 0, 2L);		
-	}
+	public void moveDoor(Door door, Player player, DoorStat stat){
+		new DoorRunnable(door, stat, player).runTaskTimer(plugin, 1L, 8L);		
+		door.setDoorStat(stat);
+	}	
 	
 	private void saveDoors(){
 		for(int i=0;i<getDoors().length;i++){

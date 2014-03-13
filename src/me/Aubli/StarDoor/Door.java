@@ -1,12 +1,10 @@
-package me.Aubli;
+package me.Aubli.StarDoor;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -30,6 +28,11 @@ public class Door {
 		;
 	}
 	
+	public enum DoorStat{
+		OPEN,
+		CLOSE,
+		;
+	}
 	
 	private File doorFile;
 	private FileConfiguration doorConfig;
@@ -38,8 +41,7 @@ public class Door {
 	private Location corner1;
 	private Location corner2;
 	
-	private ArrayList<Block> doorBlocks;
-	
+	private DoorStat doorStat = DoorStat.CLOSE;
 	private CloseType closeType;
 	private OpenType openType;
 	
@@ -61,7 +63,7 @@ public class Door {
 		doorFile.createNewFile();
 		
 		doorConfig = YamlConfiguration.loadConfiguration(doorFile);
-	//	update();
+	
 		saveDoor();
 	}
 	
@@ -95,19 +97,10 @@ public class Door {
 			doorConfig.set("door.Location.corner2.Y", corner2.getBlockY());
 			doorConfig.set("door.Location.corner2.Z", corner2.getBlockZ());
 			
-			if(doorBlocks!=null){
-				doorConfig.set("door.Blocks", doorBlocks.toString());
-			}
-			
 			doorConfig.save(doorFile);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}	
-	}
-	
-	public void setDoorBlocks(ArrayList<Block> blocks){
-		this.doorBlocks = blocks;
-		saveDoor();
 	}
 	
 	public int getID(){
@@ -122,10 +115,6 @@ public class Door {
 		return corner2;
 	}
 	
-	public ArrayList<Block> getBlockList(){
-		return doorBlocks;
-	}
-	
 	public OpenType getOpenType(){
 		return openType;
 	}
@@ -138,10 +127,6 @@ public class Door {
 		return doorFile;
 	}
 	
-	/*public void update(){
-		new DoorUpdateRunnable(this).runTask(StarDoor.getInstance());
-	}*/
-	
 	public void setOpenType(OpenType ot){
 		this.openType = ot;
 	}
@@ -149,6 +134,19 @@ public class Door {
 	public void setCloseType(CloseType ct){
 		this.closeType = ct;
 	}
+	
+	public void setDoorStat(DoorStat stat){
+		this.doorStat = stat;
+	}
+	
+	public boolean isOpen(){
+		return doorStat==DoorStat.OPEN;
+	}
+	
+	public boolean isClosed(){
+		return doorStat==DoorStat.CLOSE;
+	}
+	
 	
 	@Override
 	public String toString(){
