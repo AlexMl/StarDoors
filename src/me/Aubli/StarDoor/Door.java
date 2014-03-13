@@ -41,7 +41,7 @@ public class Door {
 	private Location corner1;
 	private Location corner2;
 	
-	private DoorStat doorStat = DoorStat.CLOSE;
+	private DoorStat doorStat = DoorStat.OPEN;
 	private CloseType closeType;
 	private OpenType openType;
 	
@@ -53,6 +53,8 @@ public class Door {
 		
 		this.openType = ot;
 		this.closeType = ct;
+		
+		doorStat = DoorStat.OPEN;
 		
 		this.doorFile = new File(doorPath + "/" + doorID + ".yml");
 		
@@ -72,6 +74,7 @@ public class Door {
 		this.doorConfig = YamlConfiguration.loadConfiguration(this.doorFile);
 		
 		this.doorID = doorConfig.getInt("door.doorID");
+		this.doorStat = DoorStat.valueOf(doorConfig.getString("door.stat"));
 		
 		this.openType = OpenType.valueOf(doorConfig.getString("door.OpenType"));
 		this.closeType = CloseType.valueOf(doorConfig.getString("door.CloseType"));
@@ -84,6 +87,7 @@ public class Door {
 		
 		try {
 			doorConfig.set("door.doorID", doorID);
+			doorConfig.set("door.stat", doorStat.toString());
 			
 			doorConfig.set("door.CloseType", closeType.toString());
 			doorConfig.set("door.OpenType", openType.toString());
@@ -137,6 +141,10 @@ public class Door {
 	
 	public void setDoorStat(DoorStat stat){
 		this.doorStat = stat;
+	}
+	
+	public DoorStat getDoorStat(){
+		return doorStat;
 	}
 	
 	public boolean isOpen(){
