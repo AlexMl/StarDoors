@@ -3,7 +3,6 @@ package me.Aubli.StarDoor.Listeners;
 import me.Aubli.StarDoor.SignManager;
 import me.Aubli.StarDoor.StarDoor;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
@@ -41,10 +40,6 @@ public class BlockBreakListener implements Listener {
 					eventPlayer.sendMessage(plugin.messagePrefix + ChatColor.RED + "Es trat ein Fehler auf!");
 					return;
 				}
-			}else{
-				Bukkit.broadcastMessage("{" + signLine + "}");
-				Bukkit.broadcastMessage("{" + messagePrefix + "}");
-				return;
 			}
 		}
 	}
