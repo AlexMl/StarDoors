@@ -34,6 +34,22 @@ public class StarDoorCommands implements CommandExecutor{
 						playerSender.sendMessage(ChatColor.DARK_RED + "You don't have permissions for that command!");
 						return true;
 					}
+				}else if(args[0].equalsIgnoreCase("list")){
+					if(playerSender.hasPermission("sd.list")){
+						String pluginVersion = plugin.getDescription().getVersion();
+						String pluginName = plugin.getDescription().getName();
+					
+						playerSender.sendMessage(ChatColor.YELLOW + "|---------- " + pluginName + " v" + pluginVersion + " Lifts ----------|");
+					
+						for(int i=0;i<plugin.dm.getDoors().length;i++){
+							Door door = plugin.dm.getDoors()[i];
+							playerSender.sendMessage(ChatColor.YELLOW + "| ID:" + ChatColor.DARK_GRAY + door.getID() + ChatColor.YELLOW + "  Öffnen:" + ChatColor.DARK_GRAY + door.getOpenType().toString() + ChatColor.YELLOW + "  Schließen:" + ChatColor.DARK_GRAY + door.getCloseType().toString() + ChatColor.YELLOW + "  Status:" + ChatColor.DARK_GRAY + door.getDoorStat().toString());
+						}
+						return true;
+					}else{
+						playerSender.sendMessage(ChatColor.DARK_RED + "You don't have permissions for that command!");
+						return true;
+					}
 				}else if(args[0].equalsIgnoreCase("save")){
 					if(playerSender.hasPermission("sd.save")){
 						plugin.dm.save();
