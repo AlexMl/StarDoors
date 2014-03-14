@@ -49,21 +49,23 @@ public class PlayerInteractListener implements Listener {
 			}
 		}
 		
-		if(event.getClickedBlock().getState() instanceof Sign){
-			if(event.getAction()==Action.RIGHT_CLICK_BLOCK){
-				Sign sign = (Sign) event.getClickedBlock().getState();
-				String signLine = ChatColor.stripColor(sign.getLine(0)) + " ";
-				String messagePrefix = ChatColor.stripColor(plugin.messagePrefix);
-				if(signLine.equals(messagePrefix)){
-					int doorID = Integer.parseInt(sign.getLine(3).split("r: ")[1]);
-					Door door = plugin.dm.getDoor(doorID);
-					
-					if(door!=null){
-						plugin.dm.moveDoor(door, eventPlayer, !door.isOpen());
-						return;
-					}
-				}	
-			}			
+		if(event.getClickedBlock()!=null){
+			if(event.getClickedBlock().getState() instanceof Sign){
+				if(event.getAction()==Action.RIGHT_CLICK_BLOCK){
+					Sign sign = (Sign) event.getClickedBlock().getState();
+					String signLine = ChatColor.stripColor(sign.getLine(0)) + " ";
+					String messagePrefix = ChatColor.stripColor(plugin.messagePrefix);
+					if(signLine.equals(messagePrefix)){
+						int doorID = Integer.parseInt(sign.getLine(3).split("r: ")[1]);
+						Door door = plugin.dm.getDoor(doorID);
+						
+						if(door!=null){
+							plugin.dm.moveDoor(door, eventPlayer, !door.isOpen());
+							return;
+						}
+					}	
+				}			
+			}
 		}
 	}
 	
