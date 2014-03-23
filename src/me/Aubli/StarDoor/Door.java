@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -46,8 +47,8 @@ public class Door {
 	private OpenType openType;
 	
 	public Door(Location corner1, Location corner2, int doorID, String doorPath, CloseType ct, OpenType ot) throws Exception{
-		this.corner1 = corner1;
-		this.corner2 = corner2;
+		this.corner1 = corner1.clone();
+		this.corner2 = corner2.clone();
 		
 		this.doorID = doorID;
 		
@@ -80,7 +81,7 @@ public class Door {
 		this.closeType = CloseType.valueOf(doorConfig.getString("door.CloseType"));
 		
 		this.corner1 = new Location(Bukkit.getWorld(doorConfig.getString("door.Location.world")), doorConfig.getInt("door.Location.corner1.X"), doorConfig.getInt("door.Location.corner1.Y"), doorConfig.getInt("door.Location.corner1.Z"));
-		this.corner2 = new Location(Bukkit.getWorld(doorConfig.getString("door.Location.world")), doorConfig.getInt("door.Location.corner2.X"), doorConfig.getInt("door.Location.corner2.Y"), doorConfig.getInt("door.Location.corner2.Z"));
+		this.corner2 = new Location(Bukkit.getWorld(doorConfig.getString("door.Location.world")), doorConfig.getInt("door.Location.corner2.X"), doorConfig.getInt("door.Location.corner2.Y"), doorConfig.getInt("door.Location.corner2.Z"));	
 	}
 	
 	void saveDoor(){
@@ -117,6 +118,10 @@ public class Door {
 	
 	public Location getCorner2(){
 		return corner2;
+	}
+	
+	public World getWorld(){
+		return corner1.getWorld();
 	}
 	
 	public OpenType getOpenType(){

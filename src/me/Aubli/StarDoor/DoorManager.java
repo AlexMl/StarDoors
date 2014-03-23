@@ -153,8 +153,10 @@ public class DoorManager {
 		if(new File(doorPath).listFiles().length>0){
 			for(int i=0;i<new File(doorPath).listFiles().length;i++){
 				Door door = new Door(new File(doorPath).listFiles()[i]);
-				//door.update();
-				doors.add(door);
+				
+				if(door.getWorld()!=null){
+					doors.add(door);
+				}
 			}
 		}
 	}
